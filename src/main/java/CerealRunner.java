@@ -6,11 +6,10 @@
 * 
 ************/
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException; 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class CerealRunner
 {
@@ -21,10 +20,18 @@ public class CerealRunner
    * @param: max - the maximum integer value of the range
    * Precondition: min < max
    */
-   public static  ArrayList<Cereal> filterCarbsPerCup(int min, int max)
-   {
-      //Add your solution to Question 1 here.
+   public static  ArrayList<Cereal> filterCarbsPerCup(int min, int max){
+      ArrayList<Cereal> result = new ArrayList<>();
+      
+      for (Cereal c : cereals) {
+         double carbsPerCup = c.getCarbs() / c.getCups();
+         if (carbsPerCup >= min && carbsPerCup <= max) {
+            result.add(c);
+         }
+      }
+      return result;
    }
+
    
    /* Question 2: Write highestPercentFiber
    * This static method will return the cereal with the highest 
@@ -34,7 +41,19 @@ public class CerealRunner
     
    public static Cereal highestPercentFiber()
    {
-      //Add your solution to Question 2 here.
+      Cereal bestCereal = cereals.get(0);
+      double maxRatio = (double) bestCereal.getFiber() / bestCereal.getCalories();
+
+      for (int i = 1; i < cereals.size(); i++) {
+         Cereal current = cereals.get(i);
+         double currentRatio = (double) current.getFiber() / current.getCalories();
+         
+         if (currentRatio > maxRatio) {
+            maxRatio = currentRatio;
+            bestCereal = current;
+         }
+      }
+      return bestCereal;
    }
   
    
@@ -46,7 +65,7 @@ public class CerealRunner
     
    public static double findNetCarbsPerCup(Cereal c)
    {
-      //Add your solution to Question 3 here.
+      return (c.getCarbs() - c.getFiber()) / c.getCups();
    }
   
 
@@ -117,6 +136,7 @@ public class CerealRunner
       Cereal testCereal = new Cereal("Golden Crisp",100,0,11,0.88);
       System.out.println("Expected results: 11.0");
       System.out.println("Actual results:   " + findNetCarbsPerCup(testCereal));
+      
       
    }
 }
